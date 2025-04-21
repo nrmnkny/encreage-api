@@ -15,16 +15,13 @@ const dbConfig = {
 
 async function connectDB() {
     try {
-        let pool = await sql.connect(dbConfig);
-        console.log("✅ Database Connected Successfully");
+        const pool = await sql.connect(dbConfig);
+        console.log("✅ Connected to Azure SQL");
         return pool;
     } catch (err) {
-        console.error("❌ Database Connection Failed:", err.message);
+        console.error("❌ DB connection error:", err);
         throw err;
     }
 }
 
-module.exports = {
-    connectDB,
-    sql
-};
+module.exports = { connectDB, sql };
