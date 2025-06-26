@@ -20,7 +20,7 @@ app.get('/api/services', async (req, res) => {
                 SERVICE_DETAIL,
                 SERVICE_CATEGORY,
                 CREATED_AT
-            FROM dbo.encreagetech.services
+            FROM encreageservices
             WHERE IS_ACTIVE = 1
         `);
 
