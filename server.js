@@ -14,14 +14,7 @@ app.get('/api/services', async (req, res) => {
     try {
         const pool = await connectDB();
         const result = await pool.request().query(`
-            SELECT 
-                SERVICE_NAME,
-                SERVICE_DESC,
-                SERVICE_DETAIL,
-                SERVICE_CATEGORY,
-                CREATED_AT
-            FROM dbo.encreageservices
-            WHERE IS_ACTIVE = 1
+        select * from encreageservices;
         `);
 
         const services = result.recordset.map(service => ({
