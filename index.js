@@ -1,48 +1,24 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { connectDB } = require('./db');
+const contentRoutes = require('./routes/content');
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
+// Root Test
 app.get('/', (req, res) => {
-  res.send('🚀 Encreage API is running!');
+  res.send('encreage-api-full-send🚀');
 });
 
-app.get('/api/servicedesk', async (req, res) => {
-    try {
-        const pool = await connectDB();
-        const result = await pool.request().query(`
-            SELECT 
-                SERVICE_ID,
-                SERVICE_TITLE,
-                SERVICE_SUMMARY,
-                SERVICE_TAGS,
-                IS_ACTIVE,
-                CREATED_AT
-            FROM encreageservicedesk
-            WHERE IS_ACTIVE = 1
-        `);
+// Content Routes
+app.use('/api/content', contentRoutes);
 
-        const services = result.recordset.map(service => ({
-            ...service,
-            CREATED_AT: new Date(service.CREATED_AT).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            })
-        }));
-
-        res.json(services);
-    } catch (err) {
-        console.error("❌ Error fetching servicedesk:", err.message);
-        res.status(500).json({ error: err.message });
-    }
+// 404 Catch
+app.use((req, res) => {
+  res.status(404).send(`🚫 Route not found: ${req.method} ${req.url}`);
 });
-
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`✅ Encreage API listening at http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`🔥 API running on http://localhost:${PORT}`));
