@@ -10,26 +10,37 @@ app.get('/', (req, res) => {
   res.send('🚀 Encreage API is running!');
 });
 
-app.get('/api/services', async (req, res) => {
-  try {
-    const pool = await connectDB();
-    const result = await pool.request().query(`SELECT * FROM encreageservices;`);
+app.get('/api/servicedesk', async (req, res) => {
+    try {
+        const pool = await connectDB();
+        const result = await pool.request().query(`
+            SELECT 
+                SERVICE_ID,
+                SERVICE_TITLE,
+                SERVICE_SUMMARY,
+                SERVICE_TAGS,
+                IS_ACTIVE,
+                CREATED_AT
+            FROM encreageservicedesk
+            WHERE IS_ACTIVE = 1
+        `);
 
-    const services = result.recordset.map(service => ({
-      ...service,
-      CREATED_AT: new Date(service.CREATED_AT).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      })
-    }));
+        const services = result.recordset.map(service => ({
+            ...service,
+            CREATED_AT: new Date(service.CREATED_AT).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            })
+        }));
 
-    res.json(services);
-  } catch (err) {
-    console.error('❌ Error fetching services:', err.message);
-    res.status(500).json({ error: err.message });
-  }
+        res.json(services);
+    } catch (err) {
+        console.error("❌ Error fetching servicedesk:", err.message);
+        res.status(500).json({ error: err.message });
+    }
 });
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
