@@ -9,7 +9,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(compression());
-app.use(require('compression')());
 
 // Root Test
 app.get('/', (req, res) => {
