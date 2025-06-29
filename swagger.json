@@ -1,0 +1,111 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Encreage API",
+    "version": "1.0.0",
+    "description": "API documentation for Encreage content management"
+  },
+  "servers": [
+    { "url": "http://localhost:5000" }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Root test",
+        "responses": {
+          "200": {
+            "description": "API is running"
+          }
+        }
+      }
+    },
+    "/api/content": {
+      "get": {
+        "summary": "Get all content blocks",
+        "responses": {
+          "200": {
+            "description": "List of content"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create new content block",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "section": { "type": "string" },
+                  "content": { "type": "string" },
+                  "type": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Content created" }
+        }
+      }
+    },
+    "/api/content/{id}": {
+      "get": {
+        "summary": "Get content by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Content item" },
+          "404": { "description": "Not found" }
+        }
+      },
+      "put": {
+        "summary": "Update content block",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "section": { "type": "string" },
+                  "content": { "type": "string" },
+                  "type": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Content updated" }
+        }
+      },
+      "delete": {
+        "summary": "Delete content block",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Content deleted" }
+        }
+      }
+    },
+    "/api/assets/{filename}": {
+      "get": {
+        "summary": "Serve static asset",
+        "parameters": [
+          { "name": "filename", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Asset file" },
+          "404": { "description": "Not found" }
+        }
+      }
+    }
+  }
+}
